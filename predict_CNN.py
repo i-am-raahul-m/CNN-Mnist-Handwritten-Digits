@@ -72,15 +72,15 @@ def label2tensor(label):
 
 ### LOADING PREDICTION CONTEXT
 # Loading saved model
-cnn = CNN(in_channels=in_channels, input_dim=data_shape, output_dim=num_classes).to(device=device)
+cnn = CNN(in_channels=in_channels, input_shape=data_shape, output_dim=num_classes).to(device=device)
 cnn.load_state_dict(torch.load(model_file_path, weights_only=True, map_location=device))
 cnn.eval()
 
 # Loading and pre-processing prediction image 
 sample_image = Image.open(image_path)
 grayscale_image = sample_image.convert("L")
-image_array = np.array(grayscale_image).flatten()
-image_tensor = torch.tensor(image_array, dtype=torch.float32, device=device).unsqueeze(0)
+image_array = np.array(grayscale_image)
+image_tensor = torch.tensor(image_array, dtype=torch.float32, device=device).unsqueeze(0).unsqueeze(0)
 normalized_image_tensor = image_tensor / 255
 
 

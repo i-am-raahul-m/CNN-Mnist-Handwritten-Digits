@@ -136,7 +136,7 @@ Here is a sample prediction made by the model:
 
 |     Input Image     | Predicted Label |
 |---------------------|-----------------|
-| ![handwritten_digit](handwritten_digit.png) |     Digit 8      |
+| ![handwritten_digit](custom_handwritten_digit.png) |     Digit 8      |
 
 ---
 
