@@ -24,7 +24,7 @@ train_stats_path = origin_path + f"training_statistics/train_stats_cnn{model_num
 ### CONSTANTS
 dataset_size = 60000
 img_size = 28
-input_dim = img_size * img_size
+input_shape = (img_size, img_size)
 output_dim = 10
 
 
@@ -55,7 +55,7 @@ class CNN(nn.Module):
 
             nn.Flatten(),
             
-            nn.Linear(input_shape[0]*input_shape[1]*64, 128),
+            nn.Linear((input_shape[0]//4*input_shape[1]//4)*64, 128),
             nn.LeakyReLU(),
             nn.Linear(128, output_dim)
             # Logits
@@ -84,7 +84,7 @@ def label2tensor(label):
 def input_image_tensor(batch_idx, batch_size):
     offset = batch_idx*batch_size
     image_np_array = images[offset:offset+batch_size]
-    tensor = torch.tensor(image_np_array, dtype=torch.float32, device=device)
+    tensor = torch.tensor(image_np_array, dtype=torch.float32, device=device).unsqueeze(1)
     tensor /= 255
     return tensor
 
@@ -99,7 +99,7 @@ def input_label_tensor(batch_idx, batch_size):
 
 ### CNN TRAINING CONTEXT
 # Models
-cnn = CNN(input_dim=input_dim, output_dim=output_dim).to(device=device)
+cnn = CNN(input_shape=input_shape, output_dim=output_dim).to(device=device)
 
 # Loss Function
 loss_function = nn.CrossEntropyLoss()

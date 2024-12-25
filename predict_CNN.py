@@ -43,7 +43,7 @@ class CNN(nn.Module):
 
             nn.Flatten(),
             
-            nn.Linear(input_shape[0]*input_shape[1]*64, 128),
+            nn.Linear((input_shape[0]//4*input_shape[1]//4)*64, 128),
             nn.LeakyReLU(),
             nn.Linear(128, output_dim)
             # Logits

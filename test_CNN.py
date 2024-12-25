@@ -44,7 +44,7 @@ class CNN(nn.Module):
 
             nn.Flatten(),
             
-            nn.Linear(input_shape[0]*input_shape[1]*64, 128),
+            nn.Linear((input_shape[0]//4*input_shape[1]//4)*64, 128),
             nn.LeakyReLU(),
             nn.Linear(128, output_dim)
             # Logits
@@ -73,7 +73,7 @@ def label2tensor(label):
 def input_image_tensor(test_idx):
     image_tensor = torch.tensor(images[test_idx], dtype=torch.float32, device=device)
     image_tensor /= 255
-    return image_tensor.unsqueeze(0)
+    return image_tensor.unsqueeze(0).unsqueeze(0)
 
 # Dataset Label input tensor creation
 def input_label(test_idx):
