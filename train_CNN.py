@@ -23,6 +23,7 @@ train_stats_path = origin_path + f"training_statistics/train_stats_cnn{model_num
 
 ### CONSTANTS
 dataset_size = 60000
+in_channels = 1
 img_size = 28
 input_shape = (img_size, img_size)
 output_dim = 10
@@ -37,11 +38,11 @@ num_of_batches = ceil(dataset_size / batch_size)
 
 ### CNN ARCHITECTURE
 class CNN(nn.Module):
-    def __init__(self, input_shape, output_dim):
+    def __init__(self, in_channels, input_shape, output_dim):
         super(CNN, self).__init__()
         self.model = nn.Sequential(
             # (28, 28, 1)
-            nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1),  # (28, 28, 32)
+            nn.Conv2d(in_channels, 32, kernel_size=3, stride=1, padding=1),  # (28, 28, 32)
             nn.BatchNorm2d(32),
             nn.LeakyReLU(),
 
@@ -99,7 +100,7 @@ def input_label_tensor(batch_idx, batch_size):
 
 ### CNN TRAINING CONTEXT
 # Models
-cnn = CNN(input_shape=input_shape, output_dim=output_dim).to(device=device)
+cnn = CNN(in_channels=in_channels, input_shape=input_shape, output_dim=output_dim).to(device=device)
 
 # Loss Function
 loss_function = nn.CrossEntropyLoss()

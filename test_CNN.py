@@ -19,18 +19,19 @@ labels_path = origin_path + "dataset/t10k-labels-idx1-ubyte/t10k-labels-idx1-uby
 
 ### CONSTANTS
 test_dataset_size = 10000
+in_channels = 1
 img_size = 28
-data_dim = img_size * img_size
+data_shape = (img_size, img_size)
 num_classes = 10   # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 
 ### CNN ARCHITECTURE
 class CNN(nn.Module):
-    def __init__(self, input_shape, output_dim):
+    def __init__(self, in_channels, input_shape, output_dim):
         super(CNN, self).__init__()
         self.model = nn.Sequential(
             # (28, 28, 1)
-            nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1),  # (28, 28, 32)
+            nn.Conv2d(in_channels, 32, kernel_size=3, stride=1, padding=1),  # (28, 28, 32)
             nn.BatchNorm2d(32),
             nn.LeakyReLU(),
 
@@ -88,7 +89,7 @@ images = load_mnist_images(images_path, flattened=False)
 labels = load_mnist_labels(labels_path)
 
 # Loading saved model
-cnn = CNN(input_dim=data_dim, output_dim=num_classes).to(device=device)
+cnn = CNN(in_channels=in_channels, input_shape=data_shape, output_dim=num_classes).to(device=device)
 cnn.load_state_dict(torch.load(model_file_path, weights_only=True, map_location=device))
 cnn.eval()
 
